@@ -142,28 +142,34 @@ void MainWindow::setEnemys()
         }
     }
     scene->addItem(enemyGroup);
-
 }
 
 void MainWindow::onGameOver(const QString &text)
 {
-    stopGame();
     int answer= QMessageBox::question(this,"Game over",text+" , Let's go new game",
                                       QMessageBox::Yes,QMessageBox::No);
 
-    if(answer==QMessageBox::Yes)
+//    stopGame();
+    if(answer==QMessageBox::Yes){
+        //TODO ПРОИСХОДИТ КРАХ ПРОГРАММЫ
+        //ВО ВРЕМЯ ОСВОБОЖДЕНИЯ РЕСУРСОВ
+
+        stopGame();
         startGame();
-    else this->close();
+    }
+    else {
+        stopGame();
+        this->close();}
 }
 
 void MainWindow::onPlayerLost()
 {
-    onGameOver("Player Lost");
+    onGameOver(PLAYER_LOST_STRING);
 }
 
 void MainWindow::onPlayerWin()
 {
-    onGameOver("Player Win");
+    onGameOver(PLAYER_WIN_STRING);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
