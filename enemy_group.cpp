@@ -41,7 +41,7 @@ void EnemyGroup::onEnemyDead()
 {
     qDebug()<<"Enemy dead"<<childItems().size();
     if(childItems().isEmpty())
-        emit enemyGroupKilled();
+        emit dead();
 }
 
 void EnemyGroup::advance(int shape)

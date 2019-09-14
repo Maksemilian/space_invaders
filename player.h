@@ -9,10 +9,8 @@ class Bulet;
 class Player :public QObject, public QGraphicsItem
 {
     Q_OBJECT
-    quint8 SIZE_W=80;
-    quint8 SIZE_H=80;
 public:
-    Player();
+    Player(const QPointF &pos,const QSize &size);
     void moveRight();
     void moveLeft();
     void attack();
@@ -29,7 +27,9 @@ protected:
 private:
     bool collidingWithBoard();
 private:
-    quint8 speed=0;
+    quint8 _speed=0;
+    int _w=0;
+    int _h=0;
 };
 
 #endif // PLAYER_H

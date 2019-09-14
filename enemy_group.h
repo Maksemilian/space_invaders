@@ -14,7 +14,7 @@ public:
     void stopAttack();
 signals:
     void collidingWithPlayer();
-    void enemyGroupKilled();
+    void dead();
 protected:
     void advance(int shape)override;
 private slots:

@@ -15,12 +15,15 @@
 #include <QTimer>
 #include <QMessageBox>
 
+const QString  MainWindow::PLAYER_LOST_STRING="Player lost";
+const QString MainWindow::PLAYER_WIN_STRING="Player win";
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     scene(new QGraphicsScene),
     view(new QGraphicsView(scene)),
-    timer(new QTimer)
+    sceneTimer(new QTimer)
 {
     ui->setupUi(this);
     setCentralWidget(view);
@@ -35,8 +38,8 @@ QSize MainWindow::getScreenSize()
 {
     QScreen *screen=QApplication::screens().at(0);
 
-    int screenW=screen->size().width()-200;
-    int screenH=screen->size().height()-200;
+    int screenW=screen->size().width()-SCREEN_MARGIN;
+    int screenH=screen->size().height()-SCREEN_MARGIN;
     return {screenW,screenH};
 }
 
@@ -70,8 +73,8 @@ void MainWindow::startGame()
 {
     QSize size=getScreenSize();
 
-    int gameSceneW=size.width()-100;
-    int gameSceneH=size.height()-100;
+    int gameSceneW=size.width()-SCENE_MARGIN;
+    int gameSceneH=size.height()-SCENE_MARGIN;
 
     setSceneBoard(gameSceneW,gameSceneH);
     setSceneBackground();
@@ -88,30 +91,35 @@ void MainWindow::stopGame()
 
 void MainWindow::startGameTimer()
 {
-    connect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
-    timer->start(200);
+    connect(sceneTimer,&QTimer::timeout,scene,&QGraphicsScene::advance);
+    sceneTimer->start(SCENE_TIMOUT);
     enemyGroup->startAttack();
 }
 
 void MainWindow::stopGameTimer()
 {
     enemyGroup->stopAttack();
-    timer->stop();
-    disconnect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
+    sceneTimer->stop();
+    disconnect(sceneTimer,&QTimer::timeout,scene,&QGraphicsScene::advance);
 }
 
 void MainWindow::setPlayer()
 {
-    player=new Player;
+    player=new Player(QPointF(0,scene->height()/2-PLAYER_SIZE_H),
+                      QSize(PLAYER_SIZE_W,PLAYER_SIZE_H));
     scene->addItem(player);
-    player->setPos(0,scene->height()/2-BOARD_OFFSET);
     player->setData(0,GO_PLAYER);
-    connect(player,&Player::dead,this,&MainWindow::onPlayerLost);
+
+    connect(player,&Player::dead,
+            this,&MainWindow::onPlayerLost);
 }
 
 void MainWindow::setEnemys()
 {
     enemyGroup=new EnemyGroup;
+
+    connect(enemyGroup,&EnemyGroup::dead,
+            this,&MainWindow::onPlayerWin);
 
     const int countEnemyRow=COUNT_ROW_ENEMY;
     const int countEnemyCollumn=COUNT_COLUMN_ENEMY;
@@ -139,27 +147,13 @@ void MainWindow::setEnemys()
 
 void MainWindow::onGameOver(const QString &text)
 {
-    int answer= QMessageBox::question(this,"Game over",text+" , reset game",
+    stopGame();
+    int answer= QMessageBox::question(this,"Game over",text+" , Let's go new game",
                                       QMessageBox::Yes,QMessageBox::No);
-    if(answer==QMessageBox::Yes){
-        stopGame();
-        startGame();
-    }else {
-        stopGame();
-        this->close();
-    }
-}
 
-void MainWindow::onEnemyKill()
-{
-    Enemy*enemy= qobject_cast<Enemy*>(sender());
-    if(enemy){
-        enemys.removeOne(enemy);
-        enemy->deleteLater();
-    }
-    if(enemys.isEmpty()){
-        onPlayerWin();
-    }
+    if(answer==QMessageBox::Yes)
+        startGame();
+    else this->close();
 }
 
 void MainWindow::onPlayerLost()

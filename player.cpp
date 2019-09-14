@@ -8,22 +8,23 @@
 #include <QDebug>
 
 
-Player::Player():speed(5)
+Player::Player(const QPointF &pos,const QSize &size)
+    :_speed(10),_w(size.width()),_h(size.height())
 {
-
+    setPos(pos);
 }
 
 void Player::moveLeft()
 {
     //    if(!collidingWithBoard())
-    setX(x()-speed);
+    setX(x()-_speed);
     collidingWithBoard();
 }
 
 void Player::moveRight()
 {
     //    if(!collidingWithBoard())
-    setX(x()+speed);
+    setX(x()+_speed);
     collidingWithBoard();
 }
 
@@ -34,9 +35,9 @@ bool Player::collidingWithBoard()
     qreal rightX=rect.x()+rect.width();
 
     if(x()<=leftX){
-        setX(leftX+speed);
+        setX(leftX+_speed);
     }else if(x()>=rightX){
-        setX(rightX-speed);
+        setX(rightX-_speed);
     }
 
     return false;
@@ -44,7 +45,7 @@ bool Player::collidingWithBoard()
 
 void Player::advance(int shape)
 {
-//    if(!shape)return;
+    //    if(!shape)return;
 
     QList<QGraphicsItem*>items= collidingItems();
 
@@ -62,7 +63,7 @@ void Player::advance(int shape)
 
 void Player::attack()
 {
-    Bulet*bulet=new Bulet( QPointF(x(),y()+SIZE_H/2-50),-90,30);
+    Bulet*bulet=new Bulet( QPointF(x(),y()+_h/2-50),-90,30);
     bulet->setData(0,GO_BULET_PLAYER);
     scene()->addItem(bulet);
 }
@@ -71,18 +72,18 @@ void Player::setDamage(Bulet *bulet)
 {
     qDebug()<<"Player Set Damage";
     bulet->deleteLater();
-//    deleteLater();
+    //    deleteLater();
 }
 
 QRectF Player::boundingRect() const
 {
-    return QRectF(0,0,SIZE_W,SIZE_H);
+    return QRectF(0,0,_w,_h);
 }
 
 void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPixmap pix("D:\\QtProject\\SI\\ship_player.png");
-    painter->drawPixmap(0,0,SIZE_W,SIZE_H,pix);
+    painter->drawPixmap(0,0,_w,_h,pix);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
