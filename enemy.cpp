@@ -51,7 +51,7 @@ void Enemy::attack()
 {
 //    Bulet*bulet=new Bulet( QPointF(x(),y()+SIZE_H/2+50),90,speedY+10);
     QPointF pos=scenePos();
-    pos.ry()+=SIZE_H/2+50;
+    pos.ry()+=_h/2+50;
     Bulet*bulet=new Bulet( pos,90,speedY+10);
     bulet->setData(0,GO_BULET_ENEMY);
 
@@ -66,13 +66,13 @@ void Enemy::setDamage(Bulet *bulet)
 
 QRectF Enemy::boundingRect() const
 {
-    return  QRectF(0,0,SIZE_W,SIZE_H);
+    return  QRectF(0,0,_w,_h);
 }
 
 void Enemy::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPixmap pix("D:\\QtProject\\SI\\ship_enemy.png");
-    painter->drawPixmap(0,0,SIZE_W,SIZE_H,pix);
+    painter->drawPixmap(0,0,_w,_h,pix);
     //    painter->setPen(Qt::gray);
     //    painter->setBrush(Qt::gray);
     //    painter->drawRect(0,0,50,20);

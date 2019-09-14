@@ -11,13 +11,12 @@ class QSize;
 class Enemy :public QObject, public QGraphicsItem
 {
     Q_OBJECT
-    quint8 SIZE_W=50;
-    quint8 SIZE_H=50;
+
 public:
     Enemy(const QPointF &position,const QSize &size);
     void attack();
     void setDamage(Bulet *bulet);
-    inline QSize size(){return {SIZE_W,SIZE_H }; }
+    inline QSize size(){return {_w,_h }; }
 signals:
     void dead();
 protected:
