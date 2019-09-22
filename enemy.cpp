@@ -71,7 +71,7 @@ QRectF Enemy::boundingRect() const
 
 void Enemy::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPixmap pix(":/images/ship_enemy.png");
+    QPixmap pix(":images/ship_enemy.png");
     painter->drawPixmap(0,0,_w,_h,pix);
     //    painter->setPen(Qt::gray);
     //    painter->setBrush(Qt::gray);

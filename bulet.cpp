@@ -21,9 +21,9 @@ void Bulet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 {
     QString path;
     if(_rotate>0){
-        path=":/images/missile_enemy.png";
+        path=":images/missile_enemy.png";
     }else {
-        path=":/images/missile_player.png";
+        path=":images/missile_player.png";
     }
     QPixmap pix(path);
 

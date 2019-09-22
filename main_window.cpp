@@ -45,7 +45,7 @@ QSize MainWindow::getScreenSize()
 
 void MainWindow::setSceneBackground()
 {
-    QPixmap bg(":/images/space_background.png");
+    QPixmap bg(":images/space_background.png");
     scene->setBackgroundBrush(QBrush(bg));
 }
 

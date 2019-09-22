@@ -83,7 +83,7 @@ QRectF Player::boundingRect() const
 void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 //    QPixmap pix(":/images/ship_player.png");
-    QPixmap pix(":/images/ship_player.png");
+    QPixmap pix(":images/ship_player.png");
     painter->drawPixmap(0,0,_w,_h,pix);
     Q_UNUSED(option);
     Q_UNUSED(widget);
