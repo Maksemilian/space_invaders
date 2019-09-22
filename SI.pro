@@ -43,7 +43,11 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+RESOURCES +=  res.qrc
+
+DISTFILES += \
+    resources/images/missile_enemy.png \
+    resources/images/missile_player.png \
+    resources/images/ship_enemy.png \
+    resources/images/ship_player.png \
+    resources/images/space_background.png

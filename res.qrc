@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+         <file alias ="missile_enemy.png">resources/images/missile_enemy.png</file>
+         <file alias ="missile_player.png">resources/images/missile_player.png</file>
+         <file alias ="ship_enemy.png">resources/images/ship_enemy.png</file>
+         <file alias="ship_player.png">resources/images/ship_player.png</file>
+         <file alias="space_background.png">resources/images/space_background.png</file>
+    </qresource>
+</RCC>
