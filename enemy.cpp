@@ -9,11 +9,14 @@
 #include <QTimer>
 #include <QSize>
 
-Enemy::Enemy(const QPointF &position,const QSize &size)
-    :_w(size.width()),_h(size.height()),
-      attackTimer(new QTimer),reloadingTime(1000)
+Enemy::Enemy()
+    :PixmapItem ("ship_enemy.png"),
+//      _w(size.width()),
+//      _h(size.height()),
+      attackTimer(new QTimer),
+      reloadingTime(1000)
 {
-    setPos(position);
+//    setPos(position);
 //    connect(attackTimer,&QTimer::timeout,this,&Enemy::attack);
 //    attackTimer->start(reloadingTime);
 }
@@ -51,8 +54,8 @@ void Enemy::attack()
 {
 //    Bulet*bulet=new Bulet( QPointF(x(),y()+SIZE_H/2+50),90,speedY+10);
     QPointF pos=scenePos();
-    pos.ry()+=_h/2+50;
-    Bulet*bulet=new Bulet( pos,90,speedY+10);
+    pos.ry()+=size().height()/2+50;
+    Bulet*bulet=new Bulet(90,speedY+10);
     bulet->setData(0,GO_BULET_ENEMY);
 
     scene()->addItem(bulet);
@@ -63,7 +66,7 @@ void Enemy::setDamage(Bulet *bulet)
     bulet->deleteLater();
     deleteLater();
 }
-
+/*
 QRectF Enemy::boundingRect() const
 {
     return  QRectF(0,0,_w,_h);
@@ -77,3 +80,4 @@ void Enemy::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     //    painter->setBrush(Qt::gray);
     //    painter->drawRect(0,0,50,20);
 }
+*/

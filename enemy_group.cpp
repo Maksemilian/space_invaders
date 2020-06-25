@@ -58,6 +58,6 @@ void EnemyGroup::advance(int shape)
             qDebug()<<"********ENAMY GROUP WIN";
         }
     }
-    qDebug()<<"PARENT ENEMY"<<x()<<y();
+    //qDebug()<<"PARENT ENEMY"<<x()<<y();
     setX(x()+speedX);
 }

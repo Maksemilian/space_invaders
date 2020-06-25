@@ -1,37 +1,43 @@
 #include "main_window.h"
 #include "ui_mainwindow.h"
+#include "graphics_scene.h"
 
-#include <QGraphicsScene>
-#include <QGraphicsView>
 
 #include "player.h"
 #include "constant.h"
 #include "enemy.h"
 #include "enemy_group.h"
 
+#include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QKeyEvent>
 #include <QDebug>
 #include <QScreen>
 #include <QTimer>
 #include <QMessageBox>
 
-const QString  MainWindow::PLAYER_LOST_STRING="Player lost";
-const QString MainWindow::PLAYER_WIN_STRING="Player win";
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    scene(new QGraphicsScene),
-    view(new QGraphicsView(scene)),
-    sceneTimer(new QTimer)
+    ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    setCentralWidget(view);
+    QAction *newGameaction=menuBar()->addAction("NewGame");
+    newGameaction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
+    QAction *quitAction=menuBar()->addAction("Quit");
+    quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
 
     QSize size=getScreenSize();
+    int gameSceneW=size.width()-SCENE_MARGIN;
+    int gameSceneH=size.height()-SCENE_MARGIN;
+
+    _scene=new GraphicsScene(-gameSceneW/2,-gameSceneH/2,gameSceneW,gameSceneH);
+    view=new QGraphicsView(_scene,this);
+    _scene->setupScene(newGameaction,quitAction);
+
     setFixedSize(size.width(),size.height());
 
-    startGame();
+    ui->setupUi(this);
+    setCentralWidget(view);
+//    startGame();
 }
 
 QSize MainWindow::getScreenSize()
@@ -43,6 +49,7 @@ QSize MainWindow::getScreenSize()
     return {screenW,screenH};
 }
 
+/*
 void MainWindow::setSceneBackground()
 {
     QPixmap bg(":images/space_background.png");
@@ -79,7 +86,7 @@ void MainWindow::startGame()
     setSceneBoard(gameSceneW,gameSceneH);
     setSceneBackground();
     setPlayer();
-    setEnemys();
+//    setEnemys();
     startGameTimer();
 }
 
@@ -93,27 +100,29 @@ void MainWindow::startGameTimer()
 {
     connect(sceneTimer,&QTimer::timeout,scene,&QGraphicsScene::advance);
     sceneTimer->start(SCENE_TIMOUT);
-    enemyGroup->startAttack();
+//    enemyGroup->startAttack();
 }
 
 void MainWindow::stopGameTimer()
 {
-    enemyGroup->stopAttack();
+//    enemyGroup->stopAttack();
     sceneTimer->stop();
     disconnect(sceneTimer,&QTimer::timeout,scene,&QGraphicsScene::advance);
 }
 
 void MainWindow::setPlayer()
 {
-    player=new Player(QPointF(0,scene->height()/2-PLAYER_SIZE_H),
-                      QSize(PLAYER_SIZE_W,PLAYER_SIZE_H));
-    scene->addItem(player);
-    player->setData(0,GO_PLAYER);
+//    QSize(PLAYER_SIZE_W,PLAYER_SIZE_H)
+    player=new Player();
 
+    player->setPos(0,scene->height()/2-PLAYER_SIZE_H);
+    scene->addItem(player);
+    //player->setData(0,GO_PLAYER);
+    player->show();
+    player->run();
     connect(player,&Player::dead,
             this,&MainWindow::onPlayerLost);
 }
-
 void MainWindow::setEnemys()
 {
     enemyGroup=new EnemyGroup;
@@ -135,8 +144,8 @@ void MainWindow::setEnemys()
 
     for(qreal posY=leftPosY;posY<maxPosY;posY+=dY){
         for(qreal posX=leftPosX;posX<maxPosX;posX+=dX){
-            Enemy *enemy=new Enemy(QPointF(posX,posY),
-                                   QSize(ENEMY_SIZE_W,ENEMY_SIZE_H));
+            Enemy *enemy=new Enemy();
+            enemy->setPos(posX,posY);
             enemy->setData(0,GO_ENEMY);
             enemyGroup->addToGroup(enemy);
         }
@@ -159,7 +168,8 @@ void MainWindow::onGameOver(const QString &text)
     }
     else {
         stopGame();
-        this->close();}
+        this->close();
+    }
 }
 
 void MainWindow::onPlayerLost()
@@ -171,10 +181,11 @@ void MainWindow::onPlayerWin()
 {
     onGameOver(PLAYER_WIN_STRING);
 }
-
+*/
+/*
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if(!player)return;
+   if(!player)return;
     qDebug()<<"Key"<<event->key();
     switch (event->key()) {
     case Qt::Key_A:
@@ -190,7 +201,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         break;
     }
 }
-
+*/
 MainWindow::~MainWindow()
 {
     delete ui;

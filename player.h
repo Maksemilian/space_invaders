@@ -1,35 +1,43 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QGraphicsItem>
-#include <QObject>
+#include "pixmap_item.h"
 
 class Bulet;
+class QStateMachine;
+class  QVariantAnimation;
 
-class Player :public QObject, public QGraphicsItem
+class Player :public PixmapItem
 {
     Q_OBJECT
+    int MAX_ROCKET=1;
 public:
-    Player(const QPointF &pos,const QSize &size);
-    void moveRight();
-    void moveLeft();
-    void attack();
-    void setDamage(Bulet *bulet);
+    enum Movement{
+        M_NONE = 0  ,
+        M_RIGHT = 1,
+        M_LEFT = 2
+    };
+    Player();
+    void run();
+    void stop();
+    void setCurrentDirection(Movement direction);
+    Movement currentDirection(){return _direction;}
+    void updateMovement();
+    inline void setSpeed(int speed){        _speed=speed;    }
+    inline int speed(){return _speed; }
 signals:
     void dead();
 protected:
     void advance(int shape)override;
-    QRectF boundingRect() const override;
-    void paint(QPainter *painter,
-               const QStyleOptionGraphicsItem *option,
-               QWidget *widget)override;
-//    void keyPressEvent(QKeyEvent*event) override;
 private:
+    void moveRight();
+    void moveLeft();
     bool collidingWithBoard();
 private:
-    quint8 _speed=0;
-    int _w=0;
-    int _h=0;
+    int _speed=-1;
+    Movement _direction=M_NONE;
+    QStateMachine *machine;
+    QVariantAnimation *movementAnimation;
 };
 
 #endif // PLAYER_H

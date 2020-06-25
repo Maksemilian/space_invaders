@@ -6,12 +6,12 @@
 #include <QPainter>
 #include <QGraphicsScene>
 
-Bulet::Bulet(const QPointF &start,qreal rotate,int speed,QObject *parent):
-    QObject (parent),QGraphicsItem (),_rotate(rotate),_speed(speed)
+Bulet::Bulet(qreal rotate,int speed):
+    PixmapItem ("missile_enemy.png"),_rotate(rotate),_speed(speed)
 {
-    setPos(start);
+//    setPos(start);
 }
-
+/*
 QRectF Bulet::boundingRect() const
 {
     return QRectF(0,0,SIZE_W,SIZE_H);
@@ -30,7 +30,7 @@ void Bulet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->drawPixmap(0,0,SIZE_W,SIZE_H,pix);
 //    painter->rotate(90);
 }
-
+*/
 void Bulet::advance(int phase)
 {
     if(!phase) return;

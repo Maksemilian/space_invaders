@@ -30,7 +30,10 @@ SOURCES += \
     player.cpp \
     enemy.cpp \
     bulet.cpp \
-    enemy_group.cpp
+    enemy_group.cpp \
+    pixmap_item.cpp \
+    graphics_scene.cpp \
+    game_states.cpp
 
 HEADERS += \
         main_window.h \
@@ -38,7 +41,11 @@ HEADERS += \
     enemy.h \
     constant.h \
     bulet.h \
-    enemy_group.h
+    enemy_group.h \
+    pixmap_item.h \
+    player_state.h \
+    graphics_scene.h \
+    game_states.h
 
 FORMS += \
         mainwindow.ui
